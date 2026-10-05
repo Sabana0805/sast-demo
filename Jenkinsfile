@@ -12,7 +12,9 @@ pipeline {
         }
         stage('SonarQube Analysis') {
             steps {
-                bat 'mvn sonar:sonar -Dsonar.projectKey=sast-demo -Dsonar.host.url=http://localhost:9000 -Dsonar.login=%SONAR_TOKEN%'
+                withSonarQubeEnv('SonarQube') {
+                    bat 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.11.0.3922:sonar -Dsonar.projectKey=sast-demo -Dsonar.projectName=sast-demo'
+                }
             }
         }
     }
