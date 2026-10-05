@@ -5,11 +5,6 @@ pipeline {
         maven 'mvn'
     }
     stages {
-        stage('Checkout') {
-            steps {
-                checkout scm
-            }
-        }
         stage('Build') {
             steps {
                 bat 'mvn clean package'
@@ -17,9 +12,7 @@ pipeline {
         }
         stage('SonarQube Analysis') {
             steps {
-                withSonarQubeEnv('SonarQube') {
-                    bat 'mvn sonar:sonar -Dsonar.projectKey=sast-demo -Dsonar.projectName=SAST-Demo'
-                }
+                bat 'mvn sonar:sonar -Dsonar.projectKey=sast-demo -Dsonar.host.url=http://localhost:9000 -Dsonar.login=%SONAR_TOKEN%'
             }
         }
     }
